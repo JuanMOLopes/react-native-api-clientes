@@ -9,16 +9,13 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-// Importa a URL da API de um arquivo separado
 import API_URL from "../API_URL";
 
 export default function TelaDelete() {
-  // Estado para armazenar o ID do cliente
   const [id, setId] = useState("");
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
 
-  // Função para deletar um cliente
   const deletarCliente = async () => {
     if (!id) {
       Alert.alert("Erro", "Por favor, insira um ID válido.");
@@ -45,9 +42,8 @@ export default function TelaDelete() {
     }
   };
 
-  // Se houver um erro, mostra a mensagem de erro
   if (erro) {
-    return <Text>{erro}</Text>;
+    return <Text style={styles.error}>{erro}</Text>;
   }
 
   return (
@@ -72,3 +68,44 @@ export default function TelaDelete() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f8f8f8",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#353839",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  input: {
+    height: 48,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#353839",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
+});

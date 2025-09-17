@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Alert,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 
 // Importa a URL da API de um arquivo separado
@@ -62,37 +63,42 @@ export default function TelaUpdate() {
 
   // Se houver um erro, mostra a mensagem de erro
   if (erro) {
-    return <Text>{erro}</Text>;
+    return <Text style={styles.error}>{erro}</Text>;
   }
 
   return (
-    <View>
-      <Text>Atualizar Cliente</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Atualizar Cliente</Text>
 
       <TextInput
+        style={styles.input}
         placeholder="ID do Cliente"
         value={id}
         onChangeText={setId}
         keyboardType="numeric"
       />
       <TextInput
+        style={styles.input}
         placeholder="Nome (opcional)"
         value={nome}
         onChangeText={setNome}
       />
       <TextInput
+        style={styles.input}
         placeholder="CPF (opcional)"
         value={cpf}
         onChangeText={setCpf}
         keyboardType="numeric"
       />
       <TextInput
+        style={styles.input}
         placeholder="Email (opcional)"
         value={email}
         onChangeText={setEmail}
         keyboardType="email-address"
       />
       <TextInput
+        style={styles.input}
         placeholder="Telefone (opcional)"
         value={telefone}
         onChangeText={setTelefone}
@@ -102,10 +108,51 @@ export default function TelaUpdate() {
       {carregando ? (
         <ActivityIndicator size="large" color="#353839" />
       ) : (
-        <TouchableOpacity onPress={atualizarCliente}>
-          <Text>Atualizar Cliente</Text>
+        <TouchableOpacity style={styles.button} onPress={atualizarCliente}>
+          <Text style={styles.buttonText}>Atualizar Cliente</Text>
         </TouchableOpacity>
       )}
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f8f8f8",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#353839",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  input: {
+    height: 48,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#353839",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
+});

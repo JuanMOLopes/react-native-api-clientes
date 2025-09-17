@@ -9,21 +9,16 @@ import {
   ActivityIndicator,
 } from "react-native";
 
-// Importa a URL da API de um arquivo separado
 import API_URL from "../API_URL";
 
 export default function TelaCreate() {
-  // Estados para armazenar os valores dos campos do formulário
   const [nome, setNome] = useState("");
   const [cpf, setCpf] = useState("");
   const [email, setEmail] = useState("");
   const [telefone, setTelefone] = useState("");
-
-  // Estado para carregamento e erro
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
 
-  // Função para lidar com o envio do formulário
   const criarCliente = async () => {
     if (!nome || !cpf || !email || !telefone) {
       Alert.alert("Erro", "Todos os campos são obrigatórios.");
@@ -43,17 +38,12 @@ export default function TelaCreate() {
 
       if (resposta.ok) {
         Alert.alert("Sucesso", "Cliente criado com sucesso!");
-
-        // Limpa os campos do formulário
         setNome("");
         setCpf("");
         setEmail("");
         setTelefone("");
       } else {
-        Alert.alert(
-          "Erro",
-          "Foi possível acessar a API, porém ocorreu um erro ao criar o cliente."
-        );
+        Alert.alert("Erro", "Erro ao criar o cliente.");
       }
     } catch (error) {
       setErro(`Erro ao criar cliente: ${error.message}`);
@@ -63,7 +53,7 @@ export default function TelaCreate() {
   };
 
   if (erro) {
-    return <Text>{erro}</Text>;
+    return <Text style={styles.error}>{erro}</Text>;
   }
 
   return (
@@ -98,12 +88,11 @@ export default function TelaCreate() {
         keyboardType="phone-pad"
       />
 
-      {/* Se carregando == true, mostra o indicador de carregamento, senão mostra o botão para criar o cliente */}
       {carregando ? (
         <ActivityIndicator size="large" color="#353839" />
       ) : (
-        <TouchableOpacity onPress={criarCliente}>
-          <Text>Criar Cliente</Text>
+        <TouchableOpacity style={styles.button} onPress={criarCliente}>
+          <Text style={styles.buttonText}>Criar Cliente</Text>
         </TouchableOpacity>
       )}
     </View>
@@ -114,19 +103,39 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   title: {
-    fontSize: 20,
+    fontSize: 24,
     fontWeight: "bold",
+    color: "#353839",
     marginBottom: 16,
+    textAlign: "center",
   },
   input: {
-    height: 40,
+    height: 48,
     borderColor: "#ccc",
     borderWidth: 1,
     marginBottom: 12,
-    paddingHorizontal: 8,
-    borderRadius: 4,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#353839",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  error: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
   },
 });

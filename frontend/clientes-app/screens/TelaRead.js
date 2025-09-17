@@ -6,25 +6,20 @@ import {
   ActivityIndicator,
   TextInput,
   TouchableOpacity,
+  StyleSheet,
   Alert,
 } from "react-native";
 
-// Importa a URL da API de um arquivo separado
 import API_URL from "../API_URL";
 
 export default function TelaRead() {
-  // Estado para armazenar os dados dos clientes, estado de carregamento e estado de erro
   const [clientes, setClientes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
-
-  // Estado para armazenar o ID do cliente que o usuario quer procurar
   const [id, setId] = useState("");
   const [clienteDesejado, setClienteDesejado] = useState(null);
 
-  // Efeito colateral para buscar os clientes ao montar o componente
   useEffect(() => {
-    // Função assíncrona para buscar os clientes da API
     const procurarClientes = async () => {
       try {
         const resposta = await fetch(API_URL);
@@ -36,14 +31,12 @@ export default function TelaRead() {
         setCarregando(false);
       }
     };
-    // Chama a função para buscar os clientes
     procurarClientes();
   }, []);
 
-  // Função para buscar um cliente por ID
   const buscarClientePorId = async () => {
     if (!id) {
-      Alert.alert("Por favor, insira um ID válido.");
+      Alert.alert("Erro", "Por favor, insira um ID válido.");
       return;
     }
 
@@ -64,46 +57,104 @@ export default function TelaRead() {
     }
   };
 
-  // Se estiver carregando, mostra um indicador de atividade
   if (carregando) {
     return <ActivityIndicator size="large" color="#353839" />;
   }
 
-  // Se houver um erro, mostra a mensagem de erro
   if (erro) {
-    return <Text>{erro}</Text>;
+    return <Text style={styles.error}>{erro}</Text>;
   }
 
-  // Se tudo estiver ok, mostra a lista de clientes em uma FlatList
   return (
-    <View>
-      <Text>GET - Lista de Clientes</Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Lista de Clientes</Text>
 
       <FlatList
         data={clientes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
-          <View>
-            <Text>{item.id}</Text>
-            <Text>{item.nome}</Text>
-            <Text>{item.cpf}</Text>
-            <Text>{item.email}</Text>
-            <Text>{item.telefone}</Text>
+          <View style={styles.card}>
+            <Text style={styles.cardText}>ID: {item.id}</Text>
+            <Text style={styles.cardText}>Nome: {item.nome}</Text>
+            <Text style={styles.cardText}>CPF: {item.cpf}</Text>
+            <Text style={styles.cardText}>Email: {item.email}</Text>
+            <Text style={styles.cardText}>Telefone: {item.telefone}</Text>
           </View>
         )}
       />
 
-      <Text>GET - Procurar por ID</Text>
+      <Text style={styles.subtitle}>Buscar Cliente por ID</Text>
 
       <TextInput
+        style={styles.input}
         placeholder="Digite o ID do cliente"
         value={id}
         onChangeText={setId}
       />
 
-      <TouchableOpacity onPress={() => buscarClientePorId}>
-        <Text>Buscar Cliente</Text>
+      <TouchableOpacity style={styles.button} onPress={buscarClientePorId}>
+        <Text style={styles.buttonText}>Buscar Cliente</Text>
       </TouchableOpacity>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 16,
+    backgroundColor: "#f5f5f5",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#353839",
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  subtitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#353839",
+    marginTop: 16,
+    marginBottom: 8,
+  },
+  input: {
+    height: 48,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    backgroundColor: "#fff",
+  },
+  button: {
+    backgroundColor: "#353839",
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  card: {
+    backgroundColor: "#fff",
+    padding: 16,
+    borderRadius: 8,
+    marginBottom: 12,
+    borderColor: "#ccc",
+    borderWidth: 1,
+  },
+  cardText: {
+    fontSize: 16,
+    color: "#353839",
+  },
+  error: {
+    color: "red",
+    textAlign: "center",
+    marginTop: 20,
+    fontSize: 16,
+  },
+});

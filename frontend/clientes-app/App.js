@@ -14,11 +14,31 @@ export default function App() {
   return (
     <NavigationContainer>
       <Drawer.Navigator>
-        <Drawer.Screen name="TelaInicial" component={TelaInicial} />
-        <Drawer.Screen name="TelaRead" component={TelaRead} />
-        <Drawer.Screen name="TelaCreate" component={TelaCreate} />
-        <Drawer.Screen name="TelaUpdate" component={TelaUpdate} />
-        <Drawer.Screen name="TelaDelete" component={TelaDelete} />
+        <Drawer.Screen
+          name="TelaInicial"
+          component={TelaInicial}
+          options={{ title: "Tela Inicial" }}
+        />
+        <Drawer.Screen
+          name="TelaRead"
+          component={TelaRead}
+          options={{ title: "Método Read" }}
+        />
+        <Drawer.Screen
+          name="TelaCreate"
+          component={TelaCreate}
+          options={{ title: "Método Create" }}
+        />
+        <Drawer.Screen
+          name="TelaUpdate"
+          component={TelaUpdate}
+          options={{ title: "Método Update" }}
+        />
+        <Drawer.Screen
+          name="TelaDelete"
+          component={TelaDelete}
+          options={{ title: "Método Delete" }}
+         />
       </Drawer.Navigator>
     </NavigationContainer>
   );

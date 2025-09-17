@@ -17,16 +17,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f5f5",
   },
   title: {
     fontSize: 24,
     fontWeight: "bold",
     marginBottom: 16,
+    color: "#353839",
   },
   subtitle: {
     fontSize: 16,
     textAlign: "center",
     paddingHorizontal: 16,
+    color: "#353839",
   },
 });
