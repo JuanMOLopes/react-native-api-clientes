@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   View,
   Text,
@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  ScrollView,
+  RefreshControl,
 } from "react-native";
 
 import API_URL from "../API_URL";
@@ -18,19 +20,27 @@ export default function TelaRead() {
   const [erro, setErro] = useState("");
   const [id, setId] = useState("");
   const [clienteDesejado, setClienteDesejado] = useState(null);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const procurarClientes = async () => {
+    try {
+      const resposta = await fetch(API_URL);
+      const dados = await resposta.json();
+      setClientes(dados);
+    } catch (error) {
+      setErro(`Erro ao buscar clientes: ${error.message}`);
+    } finally {
+      setCarregando(false);
+      setRefreshing(false);
+    }
+  };
 
   useEffect(() => {
-    const procurarClientes = async () => {
-      try {
-        const resposta = await fetch(API_URL);
-        const dados = await resposta.json();
-        setClientes(dados);
-      } catch (error) {
-        setErro(`Erro ao buscar clientes: ${error.message}`);
-      } finally {
-        setCarregando(false);
-      }
-    };
+    procurarClientes();
+  }, []);
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     procurarClientes();
   }, []);
 
@@ -81,20 +91,37 @@ export default function TelaRead() {
             <Text style={styles.cardText}>Telefone: {item.telefone}</Text>
           </View>
         )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
 
-      <Text style={styles.subtitle}>Buscar Cliente por ID</Text>
+      <ScrollView>
+        <Text style={styles.subtitle}>Buscar Cliente por ID</Text>
 
-      <TextInput
-        style={styles.input}
-        placeholder="Digite o ID do cliente"
-        value={id}
-        onChangeText={setId}
-      />
+        <TextInput
+          style={styles.input}
+          placeholder="Digite o ID do cliente"
+          value={id}
+          onChangeText={setId}
+        />
 
-      <TouchableOpacity style={styles.button} onPress={buscarClientePorId}>
-        <Text style={styles.buttonText}>Buscar Cliente</Text>
-      </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={buscarClientePorId}>
+          <Text style={styles.buttonText}>Buscar Cliente</Text>
+        </TouchableOpacity>
+
+        {clienteDesejado && (
+          <View style={styles.card}>
+            <Text style={styles.cardText}>ID: {clienteDesejado.id}</Text>
+            <Text style={styles.cardText}>Nome: {clienteDesejado.nome}</Text>
+            <Text style={styles.cardText}>CPF: {clienteDesejado.cpf}</Text>
+            <Text style={styles.cardText}>Email: {clienteDesejado.email}</Text>
+            <Text style={styles.cardText}>
+              Telefone: {clienteDesejado.telefone}
+            </Text>
+          </View>
+        )}
+      </ScrollView>
     </View>
   );
 }

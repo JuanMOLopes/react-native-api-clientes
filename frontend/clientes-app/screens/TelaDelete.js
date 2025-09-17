@@ -16,7 +16,7 @@ export default function TelaDelete() {
   const [carregando, setCarregando] = useState(false);
   const [erro, setErro] = useState("");
 
-  const deletarCliente = async () => {
+  const deletarBalada = async () => {
     if (!id) {
       Alert.alert("Erro", "Por favor, insira um ID válido.");
       return;
@@ -30,13 +30,13 @@ export default function TelaDelete() {
       });
 
       if (resposta.ok) {
-        Alert.alert("Sucesso", "Cliente deletado com sucesso!");
+        Alert.alert("Sucesso", "Balada deletada com sucesso!");
         setId("");
       } else {
-        Alert.alert("Erro", "Cliente não encontrado ou erro ao deletar.");
+        Alert.alert("Erro", "Balada não encontrada ou erro ao deletar.");
       }
     } catch (error) {
-      setErro(`Erro ao deletar cliente: ${error.message}`);
+      setErro(`Erro ao deletar balada: ${error.message}`);
     } finally {
       setCarregando(false);
     }
@@ -52,7 +52,7 @@ export default function TelaDelete() {
 
       <TextInput
         style={styles.input}
-        placeholder="Digite o ID do cliente"
+        placeholder="Digite o ID da balada"
         value={id}
         onChangeText={setId}
         keyboardType="numeric"
@@ -61,7 +61,7 @@ export default function TelaDelete() {
       {carregando ? (
         <ActivityIndicator size="large" color="#353839" />
       ) : (
-        <TouchableOpacity style={styles.button} onPress={deletarCliente}>
+        <TouchableOpacity style={styles.button} onPress={deletarBalada}>
           <Text style={styles.buttonText}>Deletar Cliente</Text>
         </TouchableOpacity>
       )}
