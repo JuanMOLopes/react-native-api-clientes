@@ -1,3 +1,8 @@
+//O models é responsável pela lógica de acesso ao banco de dados.
+
+//O controller recebe as requisições HTTP da API,
+//  chama as funções do models e retorna as respostas para o frontend.
+
 const Cliente = require("../models/cliente");
 // Controlador para obter todos os clientes
 exports.getAllClientes = (req, res) => {

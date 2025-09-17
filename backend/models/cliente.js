@@ -1,3 +1,7 @@
+//O models é responsável pela lógica de acesso ao banco de dados.
+
+//O controller recebe as requisições HTTP da API,
+//  chama as funções do models e retorna as respostas para o frontend.
 const sqlite3 = require("sqlite3").verbose();
 const dbPath = "./infra/database.db";
 // Função para abrir conexão com o banco de dados
